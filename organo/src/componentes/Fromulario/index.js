@@ -1,7 +1,9 @@
+import Botao from "../Botao";
 import CampoTexto from "../CampoTexto";
 import ListaSuspensa from "../ListaSuspensa";
+import { useState } from "react";
 import "./Formulario.css";
-const Formulario = () => {
+const Formulario = (props) => {
   const times = [
     "Programação",
     "Fornt-end",
@@ -11,15 +13,54 @@ const Formulario = () => {
     "Mobile",
     "Inovação e Gestão",
   ];
+
+  const [nome, setNome] = useState("");
+  const [cargo, setCargo] = useState("");
+  const [imagem, setImagem] = useState("");
+  const [time, setTime] = useState("");
+
+  const aoSalvar = (evento) => {
+    evento.preventDefault();
+    console.log("forme foi submetido", nome, cargo, imagem, time);
+    props.aoColaboradorCadastrado({
+      nome: nome,
+      cargo: cargo,
+      imagem: imagem,
+      time: time,
+    });
+  };
   return (
     <section className="formulario">
-      <form>
+      <form onSubmit={aoSalvar}>
         <h2>Preencha os dados para criar o car do Calaborador</h2>
-        <CampoTexto label="Nome" placeholder="Digite seu Nome" />
-        <CampoTexto label="Cargo" placeholder="Digite seu cargo" />
-        <CampoTexto label="Imagem " placeholder="Envie sua imagem" />
+        <CampoTexto
+          obrigatorio={true}
+          label="Nome"
+          placeholder="Digite seu Nome"
+          valor={nome}
+          aoAlterado={(valor) => setNome(valor)}
+        />
+        <CampoTexto
+          label="Cargo"
+          placeholder="Digite seu cargo"
+          valor={cargo}
+          aoAlterado={(valor) => setCargo(valor)}
+        />
+        <CampoTexto
+          label="Imagem "
+          placeholder="Envie sua imagem"
+          valor={imagem}
+          aoAlterado={(valor) => setImagem(valor)}
+        />
 
-        <ListaSuspensa label="time" itens={times}/>
+        <ListaSuspensa
+          obrigatorio={true}
+          label="time"
+          itens={times}
+          valor={time}
+          aoAlterado={(valor) => setTime(valor)}
+        />
+        <Botao>Criar Card</Botao>
       </form>
     </section>
   );
